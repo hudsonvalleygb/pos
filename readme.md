@@ -10,13 +10,13 @@ This will all be done from the command line
     a. From top level directory of this repo, run `pip install -r requirements.txt`
 
 3. In second level directory (where `manage.py` resides)
-    a. `./manage.py migrate`
-    b. `./manage.py createsuperuser` and follow directions on screen
-    c. `./manage.py shell`
-    d. `./from db_pop import pop_db`
-    e. `pop_db()`
-    f. `exit`
-    g. `./manage.py runserver 0.0.0.0:8000`
+    1. `./manage.py migrate`
+    2. `./manage.py createsuperuser` and follow directions on screen
+    3. `./manage.py shell`
+    4. `./from db_pop import pop_db`
+    5. `pop_db()`
+    6. `exit`
+    7. `./manage.py runserver 0.0.0.0:8000`
 
 You can now access the app at localhost:8000 (or the ip address of wherever your workstation is)
 
