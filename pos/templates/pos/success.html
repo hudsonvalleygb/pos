@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/pos.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+<p>Transaction {{ transaction.id }} created at {{ transaction.created }}</p>
+<p>Total donation: {{ transaction.gross_total }}</p>
+<p>Donation to partner: {{ transaction.donation_total }}</p>
+<p><a href="{% url 'pos' %}">New Transaction</a></p>
+</div>
+</body>
+</html>

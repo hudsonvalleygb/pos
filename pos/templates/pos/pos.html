@@ -1,0 +1,91 @@
+{% load static %}
+<HTML>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/pos.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+    <form enctype="multipart/form-data" id="transaction_form" method="POST" novalidate>
+    {% csrf_token %}
+    <div class="row">
+        <p><label for="events">Select an event:</label><select name="events" id="events">
+            {% for event in events %}
+            <option value="{{ event.id }}">{{ event.title }}</option>
+            {% endfor %}
+            </select></p>
+    </div>
+    <div class="row">
+        {% for item in items %}
+            {% if item.quantity > 0 or item.description == 'Slime' or 'Digital' in item.description %}
+            <div class="column qty-col">
+                <div class="card">
+                    <p>{{ item }}</p>
+                    <p>{{ item.sale_price }}</p>
+                    {% if 'Slime' in item.description or 'Digital' in item.description %}
+                    <p>Available: Unlimited</p>
+                    {% else %}
+                    <p>Available: {{ item.quantity }}</p>
+                    {% endif %}
+                    <p class='quantity'>
+                        <input type='button' value='-' class='qtyminus minus' field='{{ item.id }}_quantity' />
+                        <input type='text' name='{{ item.id }}_quantity' value='0' class='qty' />
+                        <input type='button' value='+' class='qtyplus plus' field='{{ item.id }}_quantity' />
+                        <input type='hidden' class='quant' value={% if item.description == 'Slime' or 'Digital' in item.description %}'99'{%else%}'{{ item.quantity }}'{% endif %}/>
+                    </p>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </div>
+                <div class="row">
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        </div>
+        <p><input type="checkbox" id="paid_cash" name="paid_cash" value=1><label for="paid_cash">Paid cash?</label></p>
+        <p><button form="transaction_form" type="submit" class='btn btn-primary'>Create Transaction</button></p>
+    </div>
+<script type="text/javascript">
+    jQuery(document).ready(($) => {
+        $('.quantity').on('click', '.plus', function(e) {
+            let $input = $(this).prev('input.qty');
+            var val = parseInt($input.val());
+            let $max = $(this).next('input.quant');
+            var max = parseInt($max.val());
+            if (val < max) {
+                $input.val(val+1).change();
+            }
+        });
+
+        $('.quantity').on('click', '.minus', function(e) {
+            let $input = $(this).next('input.qty');
+            var val = parseInt($input.val());
+            if (val > 0) {
+                $input.val(val-1).change();
+            }
+        });
+    });
+</script>
+<!--<script type="text/javascript">
+    jQuery(document).ready(($) => {
+        $('.quantity').on('click', '.plus', function(e) {
+            let $input = $(this).prev('input.qty');
+            var val = parseInt($input.val());
+            Console.log(val);
+            $input.val(val+1).change();
+        });
+
+        $('.quantity').on('click', '.minus', function(e) {
+            let $input = $(this).next('input.qty');
+            var val = parseInt($input.val());
+            if (val > 0) {
+                $input.val(val-1).change();
+            }
+        });
+    });
+</script>-->
+</body>
+</html>

@@ -1,0 +1,26 @@
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: #FFFFFF;
+    align-items: center;
+}
+
+.qty-col {
+    float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
+    padding: 0px;
+    align-items: center;
+}
+input.qtyplus {
+    width: 25px;
+    height: 25px;
+}
+input.qtyminus {
+    width: 25px;
+    height: 25px;
+}
+.qty {
+    width: 40px;
+    height: 25px;
+    text-align: center;
+}
