@@ -13,7 +13,7 @@ This will all be done from the command line
     1. `./manage.py migrate`
     2. `./manage.py createsuperuser` and follow directions on screen
     3. `./manage.py shell`
-    4. `./from db_pop import pop_db`
+    4. `from db_pop import pop_db`
     5. `pop_db()`
     6. `exit`
     7. `./manage.py runserver 0.0.0.0:8000`
