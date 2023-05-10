@@ -3,11 +3,11 @@
 This will all be done from the command line
 
 1. Ensure Python and pip are installed on your system
-    a. `python -V` will tell you if python is installed
-    b. `pip -V` will tell you if pip is installed
+    1. `python -V` will tell you if python is installed
+    2. `pip -V` will tell you if pip is installed
 
 2. Once Python and pip are confirmed as installed, install requirements
-    a. From top level directory of this repo, run `pip install -r requirements.txt`
+    1. From top level directory of this repo, run `pip install -r requirements.txt`
 
 3. In second level directory (where `manage.py` resides)
     1. `./manage.py migrate`
