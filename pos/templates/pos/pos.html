@@ -8,6 +8,17 @@
 
 </head>
 <body>
+    <header class="container">
+        <div class="row">
+            <nav id="home_nav" class="text-right">
+                {% if user.is_authenticated %}
+                    <p class="col-sm-8"></p>
+                    <p class="col-sm-1 text-right">Hi, {{ user.first_name }}!</p>
+                    <p class="col-sm-3 text-left"><a href="{% url 'create_event' %}">Create New Event</a> | <a href="{% url 'create_new_user' %}">Create New User</a> | <a href="{% url 'auth_logout' %}">Log Out</a></p>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
     <div class="container">
     <form enctype="multipart/form-data" id="transaction_form" method="POST" novalidate>
     {% csrf_token %}
@@ -20,21 +31,20 @@
     </div>
     <div class="row">
         {% for item in items %}
-            {% if item.quantity > 0 or item.description == 'Slime' or 'Digital' in item.description %}
             <div class="column qty-col">
                 <div class="card">
                     <p>{{ item }}</p>
                     <p>{{ item.sale_price }}</p>
-                    {% if 'Slime' in item.description or 'Digital' in item.description %}
-                    <p>Available: Unlimited</p>
+                    {% if item.unlimited %}
+                    <p>Available: &infin;</p>
                     {% else %}
                     <p>Available: {{ item.quantity }}</p>
                     {% endif %}
                     <p class='quantity'>
-                        <input type='button' value='-' class='qtyminus minus' field='{{ item.id }}_quantity' />
-                        <input type='text' name='{{ item.id }}_quantity' value='0' class='qty' />
-                        <input type='button' value='+' class='qtyplus plus' field='{{ item.id }}_quantity' />
-                        <input type='hidden' class='quant' value={% if item.description == 'Slime' or 'Digital' in item.description %}'99'{%else%}'{{ item.quantity }}'{% endif %}/>
+                        <input type='button' value='-' class='qtyminus minus' field='{{ item.id }}_quantity' {% if item.quantity == 0 and not item.unlimited %}disabled{% endif %}/>
+                        <input type='text' name='{{ item.id }}_quantity' value='0' class='qty' {% if item.quantity == 0 and not item.unlimited %}disabled{% endif %}/>
+                        <input type='button' value='+' class='qtyplus plus' field='{{ item.id }}_quantity' {% if item.quantity == 0 and not item.unlimited %}disabled{% endif %}/>
+                        <input type='hidden' class='quant' value={% if item.unlimited %}'99'{%else%}'{{ item.quantity }}'{% endif %}/>
                     </p>
                 </div>
             </div>
@@ -42,7 +52,6 @@
                 </div>
                 <div class="row">
             {% endif %}
-        {% endif %}
         {% endfor %}
         </div>
         <p><input type="checkbox" id="paid_cash" name="paid_cash" value=1><label for="paid_cash">Paid cash?</label></p>
@@ -69,23 +78,5 @@
         });
     });
 </script>
-<!--<script type="text/javascript">
-    jQuery(document).ready(($) => {
-        $('.quantity').on('click', '.plus', function(e) {
-            let $input = $(this).prev('input.qty');
-            var val = parseInt($input.val());
-            Console.log(val);
-            $input.val(val+1).change();
-        });
-
-        $('.quantity').on('click', '.minus', function(e) {
-            let $input = $(this).next('input.qty');
-            var val = parseInt($input.val());
-            if (val > 0) {
-                $input.val(val-1).change();
-            }
-        });
-    });
-</script>-->
 </body>
 </html>

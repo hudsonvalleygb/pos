@@ -1,4 +1,3 @@
-{% load tz %}
 {% load static %}
 <html>
 <head>
@@ -11,16 +10,14 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            {% timezone "US/Eastern" %}
-            <form id="create_event" method="POST" novalidate>
+            <form id="create_user" method="POST" novalidate>
                 {% csrf_token %}
                 {{ form.media }}
                 {% for field in form %}
                 <p><div>{{ field.label }}</div><div>{{ field }}</div></p>
                 {% endfor %}
-                <p><button form="create_event" type="submit" class='btn btn-primary'>Create Event</button></p>
+                <p><button form="create_user" type="submit" class='btn btn-primary'>Create User</button></p>
             </form>
-            {% endtimezone %}
         </div>
     </div>
 </div>

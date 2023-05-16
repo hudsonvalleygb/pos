@@ -1,0 +1,31 @@
+{% load tz %}
+{% load static %}
+<HTML>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/pos.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <header class="container">
+        <div class="row">
+            <nav id="home_nav" class="text-right">
+                {% if user.is_authenticated %}
+                    <p class="col-sm-8"></p>
+                    <p class="col-sm-1 text-right">Hi, {{ user.first_name }}!</p>
+                    <p class="col-sm-3 text-left"><a href="{% url 'create_event' %}">Create New Event</a> | <a href="{% url 'create_new_user' %}">Create New User</a> | <a href="{% url 'auth_logout' %}">Log Out</a></p>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+    <div class="row">
+        {% for event in events %}
+            {{ event.title }}
+        {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

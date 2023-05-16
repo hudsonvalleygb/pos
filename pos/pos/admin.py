@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 
 from nested_inline.admin import NestedModelAdmin, NestedTabularInline
 
-from .models import Event, Item, Transaction, TransactionItem
+from .models import Event, Item, Transaction, TransactionItem, Organization, UserInfo
 
 
 class NestedTransactionItemInline(NestedTabularInline):
@@ -53,6 +55,12 @@ class EventAdmin(NestedModelAdmin):
             total += transaction.gross_total
         return total
 
+    def get_queryset(self, request):
+        qs = super(EventAdmin, self).get_queryset(request)
+        if request.user.userinfo.is_limited:
+            return qs.filter(org_id=request.user.userinfo.org_id)
+        return qs
+
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
@@ -61,6 +69,12 @@ class ItemAdmin(admin.ModelAdmin):
 
     def item_name(self, model):
         return model.__str__()
+
+    def get_queryset(self, request):
+        qs = super(ItemAdmin, self).get_queryset(request)
+        if request.user.userinfo.is_limited:
+            return qs.filter(org_id=request.user.userinfo.org_id)
+        return qs
 
 
 class TransactionItemInline(admin.TabularInline):
@@ -83,3 +97,35 @@ class TransactionAdmin(admin.ModelAdmin):
         trans_id = str(obj.id).split('-')[-1][-4:]
         return obj.description or '{} - transaction {}'.format(obj.event.title, trans_id)
 
+    def get_queryset(self, request):
+        qs = super(TransactionAdmin, self).get_queryset(request)
+        if request.user.userinfo.is_limited:
+            return qs.filter(created_by__userinfo__org_id=request.user.userinfo.org_id)
+        return qs
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    model = Organization
+
+    def get_queryset(self, request):
+        qs = super(OrganizationAdmin, self).get_queryset(request)
+        if request.user.userinfo.is_limited:
+            return qs.filter(id=request.user.userinfo.org_id)
+        return qs
+
+class UserInfoInline(admin.StackedInline):
+    model = UserInfo
+    can_delete = False
+
+
+class UserAdmin(BaseUserAdmin):
+    inlines = (UserInfoInline,)
+
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        if request.user.userinfo.is_limited:
+            return qs.filter(userinfo__org_id=request.user.userinfo.org_id)
+        return qs
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
