@@ -22,6 +22,11 @@
     <div class="container">
     <form enctype="multipart/form-data" id="transaction_form" method="POST" novalidate>
     {% csrf_token %}
+    {% if errors %}
+        <div class="row error">
+            <p class="error">DID NOT CREATE TRANSACTION: NOT ENOUGH INVENTORY</p>
+        </div>
+    {% endif %}
     <div class="row">
         <p><label for="events">Select an event:</label><select name="events" id="events">
             {% for event in events %}
@@ -33,6 +38,9 @@
         {% for item in items %}
             <div class="column qty-col">
                 <div class="card">
+                    {% if errors and item.id in errors.keys %}
+                        <p class="error">NOT ENOUGH {{ item }} to sell {{ item.error }}
+                    {% endif %}
                     <p>{{ item }}</p>
                     <p>{{ item.sale_price }}</p>
                     {% if item.unlimited %}

@@ -45,6 +45,17 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+    def gross_intake(self):
+        total = Decimal(0.00)
+        for transaction in self.transactions.all():
+            total += transaction.gross_total
+        return total
+
+    def net_intake(self):
+        total = Decimal(0.00)
+        for transaction in self.transactions.all():
+            total += transaction.donation_total
+
 
 class Transaction(models.Model):
     description = models.CharField(max_length=200, null=True, blank=True)
@@ -76,11 +87,15 @@ class TransactionItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0)
 
+    def total(self):
+        return self.quantity * self.item.sale_price
+
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     org = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.SET_NULL)
     is_limited = models.BooleanField(default=True, blank=False, null=False)
+    timezone = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)

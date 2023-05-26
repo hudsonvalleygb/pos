@@ -15,9 +15,11 @@
             <form id="create_event" method="POST" novalidate>
                 {% csrf_token %}
                 {{ form.media }}
+                {% timezone user.userinfo.timezone %}
                 {% for field in form %}
                 <p><div>{{ field.label }}</div><div>{{ field }}</div></p>
                 {% endfor %}
+                {% endtimezone %}
                 <p><button form="create_event" type="submit" class='btn btn-primary'>Create Event</button></p>
             </form>
             {% endtimezone %}

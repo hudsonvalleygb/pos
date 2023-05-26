@@ -9,8 +9,11 @@
 <body>
 <div class="container">
 <p>Transaction {{ transaction.id }} created at {{ transaction.created }}</p>
-<p>Total donation: {{ transaction.gross_total }}</p>
-<p>Donation to partner: {{ transaction.donation_total }}</p>
+{% for item in transaction_items %}
+<p>{{ item.quantity }}x {{ item.item }}: ${{ item.total }}</p>
+{% endfor %}
+<p><strong>Total donation: ${{ transaction.gross_total }}</strong></p>
+<p><strong>Donation to partner: ${{ transaction.donation_total }}</strong></p>
 <p><a href="{% url 'pos' %}">New Transaction</a></p>
 </div>
 </body>

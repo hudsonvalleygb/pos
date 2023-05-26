@@ -22,10 +22,14 @@
     </header>
     <div class="container">
     <div class="row">
-        {% for event in events %}
-            <p><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a></p>
-        {% endfor %}
-        </div>
+        <p class="col-sm-12"><strong>Event name:</strong> {{ event.title }}</p>
+        <p class="col-sm-12"><strong>Event charity:</strong> {{ event.partner }}</p>
+        <p class="col-sm-12"><strong>Event host:</strong> {{ event.host }}</p>
+        {% timezone user.userinfo.timezone %}
+        <p class="col-sm-12"><strong>Event start:</strong> {{ event.start_date }}</p>
+        <p class="col-sm-12"><strong>Event end:</strong> {{ event.end_date }}</p>
+        {% endtimezone %}
+        <p class="col-sm-12"><strong>Street address:</strong> {{ event.address }}, {{ event.city }}, {{ event.state }}</p>
     </div>
 </body>
 </html>

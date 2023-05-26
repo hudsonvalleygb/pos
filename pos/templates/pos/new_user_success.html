@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            <p>User {{ user.first_name }} {{ user.last_name }} created</p>
+            <p>User {{ new_user.first_name }} {{ new_user.last_name }} created for {{ new_user.userinfo.org }}</p>
             <p><a href="{% url 'create_event' %}">New Event</a></p>
             <p><a href="{% url 'create_new_user' %}">New User</a></p>
             <p><a href="{% url 'pos' %}">Add Transaction</a></p>

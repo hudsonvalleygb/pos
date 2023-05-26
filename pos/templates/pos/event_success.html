@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            <p>Event {{ event.title }} created</p>
+            <p><a href="{% url 'event_detail' event.id %}"> Event {{ event.title }} created</a></p>
             <p><a href="{% url 'create_event' %}">New Event</a></p>
             <p><a href="{% url 'pos' %}">Add Transaction</a></p>
             <p><a href="{% url 'create_new_user' %}">Add New User</a></p>
